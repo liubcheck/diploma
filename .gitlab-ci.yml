@@ -25,3 +25,4 @@ deploy:
     - sudo docker compose up -d
   only:
     - main
+    
