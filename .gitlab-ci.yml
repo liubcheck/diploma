@@ -8,7 +8,7 @@ build:
   tags:
     - deploy-diploma-be
   script:
-    - mvn clean package -Dmaven.test.skip
+    - mvn clean package
     - sudo docker build -t diploma/eureka-server ./eureka-server/
     - sudo docker build -t diploma/api-gateway ./api-gateway/
     - sudo docker build -t diploma/lesson-service ./lesson-service/
