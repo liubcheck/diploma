@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: maven:3.8.4-openjdk-17
+  tags:
+    - deploy-diploma-be
+  script:
+    - mvn clean package -Dmaven.test.skip
+    - sudo docker build -t diploma/eureka-server ./eureka-server/
+    - sudo docker build -t diploma/api-gateway ./api-gateway/
+    - sudo docker build -t diploma/lesson-service ./lesson-service/
+  artifacts:
+    paths:
+      - target/
+
+deploy:
+  stage: deploy
+  image: docker:19.03.12
+  services:
+    - docker:dind
+  script:
+    - sudo docker compose up -d
+  only:
+    - main
