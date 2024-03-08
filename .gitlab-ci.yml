@@ -11,6 +11,7 @@ build:
     - cd eureka-server && mvn clean package
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
+    - cd ..
     - sudo docker build -t diploma/eureka-server ./eureka-server/
     - sudo docker build -t diploma/api-gateway ./api-gateway/
     - sudo docker build -t diploma/lesson-service ./lesson-service/
