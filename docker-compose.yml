@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   eureka-server:
-    image: diploma/eureka-server:prod
+    image: diploma/eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
 
   api-gateway:
-    image: diploma/api-gateway:prod
+    image: diploma/api-gateway
     container_name: api-gateway
     depends_on:
       - eureka-server
@@ -16,7 +16,7 @@ services:
       - "9090:9090"
 
   lesson-service:
-    image: diploma/lesson-service:prod
+    image: diploma/lesson-service
     container_name: lesson-service
     depends_on:
       - eureka-server
