@@ -4,17 +4,19 @@ stages:
 
 build:
   stage: build
-  image: maven:3.6.3-openjdk-17
-  tags:
-    - deploy-diploma-be
+  image: docker:19.03
+  services:
+    - docker:dind
+  before_script:
+    - apk add --no-cache docker-cli
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
-    - cd eureka-server && mvn clean package
-    - cd ../api-gateway && mvn clean package
-    - cd ../lesson-service && mvn clean package
-    - cd ..
-    - sudo docker build -t diploma/eureka-server ./eureka-server/
-    - sudo docker build -t diploma/api-gateway ./api-gateway/
-    - sudo docker build -t diploma/lesson-service ./lesson-service/
+    - docker build -t $DOCKER_USERNAME/diploma/eureka-server ./eureka-server/
+    - docker build -t $DOCKER_USERNAME/diploma/api-gateway ./api-gateway/
+    - docker build -t $DOCKER_USERNAME/diploma/lesson-service ./lesson-service/
+    - docker push $DOCKER_USERNAME/diploma/eureka-server
+    - docker push $DOCKER_USERNAME/diploma/api-gateway
+    - docker push $DOCKER_USERNAME/diploma/lesson-service
   artifacts:
     paths:
       - target/
