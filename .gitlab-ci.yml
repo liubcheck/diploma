@@ -9,15 +9,23 @@ build:
     - deploy-diploma-be
   script:
     - cd eureka-server && mvn clean package
+    - docker build -t registry.example.com/diploma/eureka-server:latest ./eureka-server/
+    - docker push registry.example.com/diploma/eureka-server:latest
+
     - cd ../api-gateway && mvn clean package
+    - docker build -t registry.example.com/diploma/api-gateway:latest ./api-gateway/
+    - docker push registry.example.com/diploma/api-gateway:latest
+
     - cd ../lesson-service && mvn clean package
-    - cd ..
-    - sudo docker build -t diploma/eureka-server ./eureka-server/
-    - sudo docker build -t diploma/api-gateway ./api-gateway/
-    - sudo docker build -t diploma/lesson-service ./lesson-service/
+    - docker build -t registry.example.com/diploma/lesson-service:latest ./lesson-service/
+    - docker push registry.example.com/diploma/lesson-service:latest
   artifacts:
     paths:
-      - target/
+      - eureka-server/target/*.jar
+      - api-gateway/target/*.jar
+      - lesson-service/target/*.jar
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin
 
 deploy:
   stage: deploy
@@ -30,4 +38,3 @@ deploy:
     - docker-compose up -d
   only:
     - main
-    
