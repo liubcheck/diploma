@@ -12,9 +12,9 @@ build:
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
-    - sudo docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
-    - sudo docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
-    - sudo docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
+    - docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
+    - docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
+    - docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
   artifacts:
     paths:
       - target/
@@ -24,7 +24,9 @@ deploy:
   image: docker:19.03.12
   services:
     - docker:dind
+  before_script:
+    - apk add --no-cache docker-compose
   script:
-    - sudo docker compose up -d
+    - docker-compose up -d
   only:
     - main
