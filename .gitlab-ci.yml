@@ -12,9 +12,9 @@ build:
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
-    - docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
-    - docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
-    - docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
+    - sudo docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
+    - sudo docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
+    - sudo docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
   artifacts:
     paths:
       - target/
