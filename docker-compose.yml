@@ -1,23 +1,39 @@
-version: '3.7'
+version: '3.8'
 
 services:
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: diploma
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   eureka-server:
-    image: diploma/eureka-server
-    container_name: eureka-server
+    build: ./eureka-server
     ports:
       - "8761:8761"
 
   api-gateway:
-    image: diploma/api-gateway
-    container_name: api-gateway
-    depends_on:
-      - eureka-server
+    build: ./api-gateway
     ports:
       - "9090:9090"
+    depends_on:
+      - eureka-server
 
   lesson-service:
-    image: diploma/lesson-service
-    container_name: lesson-service
+    build: ./lesson-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/diploma
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345678
     depends_on:
       - eureka-server
       - api-gateway
+      - postgres-db
+
+volumes:
+  pgdata:

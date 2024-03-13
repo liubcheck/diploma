@@ -1,4 +1,5 @@
 FROM openjdk:17-slim-buster
-COPY target/*.jar eureka-server.jar
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} eureka-server.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/eureka-server.jar"]
