@@ -13,27 +13,28 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   eureka-server:
-    build: diploma/eureka-server
+    image: diploma/eureka-server:latest
     ports:
       - "8761:8761"
 
   api-gateway:
-    build: diploma/api-gateway
+    image: diploma/api-gateway:latest
+    depends_on:
+      - eureka-server
     ports:
       - "9090:9090"
-    depends_on:
-      - eureka-server
 
   lesson-service:
-    build: diploma/lesson-service
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/diploma
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 12345678
+    image: diploma/lesson-service:latest
     depends_on:
       - eureka-server
-      - api-gateway
       - postgres-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db/diploma
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    ports:
+      - "8080:8080"
 
 volumes:
   pgdata:
