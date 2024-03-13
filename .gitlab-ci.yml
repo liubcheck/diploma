@@ -1,31 +1,44 @@
 stages:
-  - build
-  - deploy
+  - build_java
+  - build_and_push_docker
 
-build:
-  stage: build
+build_java:
+  stage: build_java
   image: maven:3.6.3-openjdk-17
   script:
     - cd eureka-server && mvn clean package
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
-    - cd ..
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker build -t $DOCKER_USERNAME/diploma/eureka-server:latest ./eureka-server/
-    - docker push $DOCKER_USERNAME/diploma/eureka-server:latest
-    - docker build -t $DOCKER_USERNAME/diploma/api-gateway:latest ./api-gateway/
-    - docker push $DOCKER_USERNAME/diploma/api-gateway:latest
-    - docker build -t $DOCKER_USERNAME/diploma/lesson-service:latest ./lesson-service/
-    - docker push $DOCKER_USERNAME/diploma/lesson-service:latest
   artifacts:
     paths:
-      - target/
+      - eureka-server/target/*.jar
+      - api-gateway/target/*.jar
+      - lesson-service/target/*.jar
+
+build_and_push_docker:
+  stage: build_and_push_docker
+  image: docker:19.03.12
+  services:
+    - docker:dind
+  before_script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  script:
+    - docker build -t $DOCKER_USERNAME/diploma/eureka-server:latest -f ./eureka-server/Dockerfile .
+    - docker push $DOCKER_USERNAME/diploma/eureka-server:latest
+    - docker build -t $DOCKER_USERNAME/diploma/api-gateway:latest -f ./api-gateway/Dockerfile .
+    - docker push $DOCKER_USERNAME/diploma/api-gateway:latest
+    - docker build -t $DOCKER_USERNAME/diploma/lesson-service:latest -f ./lesson-service/Dockerfile .
+    - docker push $DOCKER_USERNAME/diploma/lesson-service:latest
+  dependencies:
+    - build_java
 
 deploy:
   stage: deploy
   image: docker:19.03.12
   services:
     - docker:dind
+  before_script:
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   script:
     - docker-compose up -d
   only:
