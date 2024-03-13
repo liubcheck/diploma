@@ -10,9 +10,9 @@ build:
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
-    - sudo docker build -t diploma/eureka-server:prod ./eureka-server/
-    - sudo docker build -t diploma/api-gateway:prod ./api-gateway/
-    - sudo docker build -t diploma/lesson-service:prod ./analytic-service/
+    - docker build -t diploma/eureka-server:prod ./eureka-server/
+    - docker build -t diploma/api-gateway:prod ./api-gateway/
+    - docker build -t diploma/lesson-service:prod ./analytic-service/
   artifacts:
     paths:
       - target/
