@@ -1,36 +1,23 @@
 stages:
-  - compile
   - build
   - deploy
 
-compile:
-  stage: compile
+build:
+  stage: build
   image: maven:3.6.3-openjdk-17
+  tags:
+    - deploy-diploma-be
   script:
     - cd eureka-server && mvn clean package
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
+    - sudo docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
+    - sudo docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
+    - sudo docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
   artifacts:
     paths:
-      - eureka-server/target/*.jar
-      - api-gateway/target/*.jar
-      - lesson-service/target/*.jar
-
-build:
-  stage: build
-  image: docker:19.03.12
-  services:
-    - docker:dind
-  before_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  script:
-    - docker build -t $DOCKER_USERNAME/diploma/eureka-server:latest -f eureka-server/Dockerfile .
-    - docker push $DOCKER_USERNAME/diploma/eureka-server:latest
-    - docker build -t $DOCKER_USERNAME/diploma/api-gateway:latest -f api-gateway/Dockerfile .
-    - docker push $DOCKER_USERNAME/diploma/api-gateway:latest
-    - docker build -t $DOCKER_USERNAME/diploma/lesson-service:latest -f lesson-service/Dockerfile .
-    - docker push $DOCKER_USERNAME/diploma/lesson-service:latest
+      - target/
 
 deploy:
   stage: deploy
@@ -38,6 +25,6 @@ deploy:
   services:
     - docker:dind
   script:
-    - docker-compose up -d
+    - sudo docker compose up -d
   only:
     - main
