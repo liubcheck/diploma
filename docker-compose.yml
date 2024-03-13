@@ -13,19 +13,19 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   eureka-server:
-    image: diploma/eureka-server:latest
+    image: liubcheck/diploma/eureka-server:latest
     ports:
       - "8761:8761"
 
   api-gateway:
-    image: diploma/api-gateway:latest
+    image: liubcheck/diploma/api-gateway:latest
     depends_on:
       - eureka-server
     ports:
       - "9090:9090"
 
   lesson-service:
-    image: diploma/lesson-service:latest
+    image: liubcheck/diploma/lesson-service:latest
     depends_on:
       - eureka-server
       - postgres-db

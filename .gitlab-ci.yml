@@ -10,9 +10,13 @@ build:
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
-    - docker build -t diploma/eureka-server:prod ./eureka-server/
-    - docker build -t diploma/api-gateway:prod ./api-gateway/
-    - docker build -t diploma/lesson-service:prod ./analytic-service/
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build -t $DOCKER_USERNAME/diploma/eureka-server:latest ./eureka-server/
+    - docker push $DOCKER_USERNAME/diploma/eureka-server:latest
+    - docker build -t $DOCKER_USERNAME/diploma/api-gateway:latest ./api-gateway/
+    - docker push $DOCKER_USERNAME/diploma/api-gateway:latest
+    - docker build -t $DOCKER_USERNAME/diploma/lesson-service:latest ./lesson-service/
+    - docker push $DOCKER_USERNAME/diploma/lesson-service:latest
   artifacts:
     paths:
       - target/
