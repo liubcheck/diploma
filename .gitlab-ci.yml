@@ -8,7 +8,7 @@ build:
   tags:
     - deploy-diploma-be
   before_script:
-    - docker system prune -af
+    - sudo docker system prune -af
   script:
     - cd eureka-server && mvn clean package
     - cd ../api-gateway && mvn clean package
