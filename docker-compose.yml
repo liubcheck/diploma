@@ -14,13 +14,13 @@ services:
       - "5432:5432"
 
   eureka-server:
-    image: liubcheck/diploma/eureka-server:latest
+    image: diploma/eureka-server:prod
     restart: always
     ports:
       - "8761:8761"
 
   api-gateway:
-    image: liubcheck/diploma/api-gateway:latest
+    image: diploma/api-gateway:prod
     restart: always
     depends_on:
       - eureka-server
@@ -28,7 +28,7 @@ services:
       - "9090:9090"
 
   lesson-service:
-    image: liubcheck/diploma/lesson-service:latest
+    image: diploma/lesson-service:prod
     restart: always
     depends_on:
       - eureka-server
@@ -38,6 +38,3 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/diploma
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 12345678
-
-volumes:
-  pgdata:

@@ -7,14 +7,16 @@ build:
   image: maven:3.6.3-openjdk-17
   tags:
     - deploy-diploma-be
+  services:
+    - docker:dind
   script:
     - cd eureka-server && mvn clean package
     - cd ../api-gateway && mvn clean package
     - cd ../lesson-service && mvn clean package
     - cd ..
-    - sudo docker build -t liubcheck/diploma/eureka-server:latest ./eureka-server/
-    - sudo docker build -t liubcheck/diploma/api-gateway:latest ./api-gateway/
-    - sudo docker build -t liubcheck/diploma/lesson-service:latest ./lesson-service/
+    - docker build -t diploma/eureka-server:prod ./eureka-server/
+    - docker build -t diploma/api-gateway:prod ./api-gateway/
+    - docker build -t diploma/lesson-service:prod ./lesson-service/
   artifacts:
     paths:
       - target/
