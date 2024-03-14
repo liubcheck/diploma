@@ -13,19 +13,19 @@ services:
       - "5432:5432"
 
   eureka-server:
-    image: liubcheck/diploma/eureka-server:prod
+    image: liubcheck/diploma:eureka-server-prod
     ports:
       - "8761:8761"
 
   api-gateway:
-    image: liubcheck/diploma/api-gateway:prod
+    image: liubcheck/diploma:api-gateway-prod
     depends_on:
       - eureka-server
     ports:
       - "9090:9090"
 
   lesson-service:
-    image: liubcheck/diploma/lesson-service:prod
+    image: liubcheck/diploma:lesson-service-prod
     depends_on:
       - eureka-server
       - api-gateway

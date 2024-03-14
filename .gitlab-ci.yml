@@ -4,7 +4,6 @@ stages:
   - deploy
 
 variables:
-  DOCKER_IMAGE_PREFIX: "diploma"
   POSTGRES_VOLUME: "pgdata"
 
 build:
@@ -24,13 +23,13 @@ package:
   services:
     - docker:dind
   script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.io
-    - docker build -t $DOCKER_IMAGE_PREFIX/eureka-server:prod ./eureka-server/
-    - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_PREFIX/eureka-server:prod
-    - docker build -t $DOCKER_IMAGE_PREFIX/api-gateway:prod ./api-gateway/
-    - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_PREFIX/api-gateway:prod
-    - docker build -t $DOCKER_IMAGE_PREFIX/lesson-service:prod ./lesson-service/
-    - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_PREFIX/lesson-service:prod
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build -t $DOCKER_USERNAME/diploma:eureka-server-prod ./eureka-server/
+    - docker push $DOCKER_USERNAME/diploma:eureka-server-prod
+    - docker build -t $DOCKER_USERNAME/diploma:api-gateway-prod ./api-gateway/
+    - docker push $DOCKER_USERNAME/diploma:api-gateway-prod
+    - docker build -t $DOCKER_USERNAME/diploma:lesson-service-prod ./lesson-service/
+    - docker push $DOCKER_USERNAME/diploma:lesson-service-prod
   only:
     - main
 
