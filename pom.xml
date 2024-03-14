@@ -31,4 +31,10 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>eureka-server</module>
+        <module>api-gateway</module>
+        <module>lesson-service</module>
+    </modules>
+
 </project>
