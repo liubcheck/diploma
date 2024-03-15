@@ -1,17 +1,39 @@
 package liubomyr.stepanenko.lessonservice.mapper;
 
-import liubomyr.stepanenko.lessonservice.config.MapperConfig;
+import java.util.Optional;
 import liubomyr.stepanenko.lessonservice.dto.request.VariantRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.VariantDto;
+import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.model.Variant;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
-@Mapper(config = MapperConfig.class)
-public interface VariantMapper {
-    VariantDto toDto(Variant variant);
+@Component
+public class VariantMapper {
 
-    Variant toModel(VariantRequestDto variantRequestDto);
+    public VariantDto toDto(Variant variant) {
+        VariantDto variantDto =  new VariantDto();
+        variantDto.setId(variant.getId());
+        variantDto.setValue(variant.getValue());
+        variantDto.setIsRight(variant.getIsRight());
+        return variantDto;
+    }
 
-    void updateModelFromDto(@MappingTarget Variant variant, VariantRequestDto variantRequestDto);
+    public Variant toModel(VariantRequestDto variantRequestDto) {
+        Variant variant = new Variant();
+        variant.setId(variantRequestDto.getId());
+        updateModelFromDto(variant, variantRequestDto);
+        return variant;
+    }
+
+    public void updateModelFromDto(Variant variant, VariantRequestDto variantRequestDto) {
+        variant.setTask(getTaskFromId(variantRequestDto.getTaskId()));
+        variant.setValue(variantRequestDto.getValue());
+        variant.setIsRight(variantRequestDto.getIsRight());
+    }
+
+    private Task getTaskFromId(Long id) {
+        return Optional.ofNullable(id)
+                .map(Task::new)
+                .orElse(null);
+    }
 }

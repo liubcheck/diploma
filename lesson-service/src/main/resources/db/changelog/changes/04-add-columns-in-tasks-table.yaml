@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-missing-columns-to-tasks-table
+      author: liubcheck
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: right_answer
+                  type: varchar(255)
+                  constraints:
+                    nullable: true

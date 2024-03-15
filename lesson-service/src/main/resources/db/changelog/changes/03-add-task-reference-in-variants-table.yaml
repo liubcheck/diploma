@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-task-reference-in-variants-table
+      author: liubcheck
+      changes:
+        - addColumn:
+            tableName: variants
+            columns:
+              - column:
+                  name: task_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_variant_task
+                    references: tasks(id)
