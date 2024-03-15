@@ -6,16 +6,15 @@ import liubomyr.stepanenko.lessonservice.dto.request.TaskRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.TaskDto;
 import liubomyr.stepanenko.lessonservice.mapper.TaskMapper;
 import liubomyr.stepanenko.lessonservice.model.Task;
-import liubomyr.stepanenko.lessonservice.model.Variant;
 import liubomyr.stepanenko.lessonservice.repository.TaskRepository;
-import liubomyr.stepanenko.lessonservice.service.TaskService;
+import liubomyr.stepanenko.lessonservice.service.BasicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("taskService")
 @RequiredArgsConstructor
-public class TaskServiceImpl implements TaskService {
+public class TaskService implements BasicService<TaskRequestDto, TaskDto> {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
@@ -23,9 +22,6 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskDto save(TaskRequestDto taskRequestDto) {
         Task task = taskMapper.toModel(taskRequestDto);
-        for (Variant variant : task.getVariants()) {
-            variant.setTask(task);
-        }
         return taskMapper.toDto(taskRepository.save(task));
     }
 
@@ -41,8 +37,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public List<TaskDto> getAll() {
-        List<Task> tasks = taskRepository.findAll();
-        return tasks.stream().map(taskMapper::toDto).toList();
+        return taskRepository.findAll().stream()
+                .map(taskMapper::toDto)
+                .toList();
     }
 
     @Override

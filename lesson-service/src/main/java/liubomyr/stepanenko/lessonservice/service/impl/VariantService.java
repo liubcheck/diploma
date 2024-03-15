@@ -7,13 +7,13 @@ import liubomyr.stepanenko.lessonservice.dto.response.VariantDto;
 import liubomyr.stepanenko.lessonservice.mapper.VariantMapper;
 import liubomyr.stepanenko.lessonservice.model.Variant;
 import liubomyr.stepanenko.lessonservice.repository.VariantRepository;
-import liubomyr.stepanenko.lessonservice.service.VariantService;
+import liubomyr.stepanenko.lessonservice.service.BasicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service("variantService")
 @RequiredArgsConstructor
-public class VariantServiceImpl implements VariantService {
+public class VariantService implements BasicService<VariantRequestDto, VariantDto> {
     private final VariantRepository variantRepository;
     private final VariantMapper variantMapper;
 
@@ -26,7 +26,7 @@ public class VariantServiceImpl implements VariantService {
     @Override
     public VariantDto getById(Long id) {
         return variantMapper.toDto(variantRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("No variant is found by id = " + id)
+                () -> new EntityNotFoundException("Variant not found with id = " + id)
         ));
     }
 

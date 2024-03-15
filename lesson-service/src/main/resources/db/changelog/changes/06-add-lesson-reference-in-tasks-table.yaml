@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-lesson-reference-in-tasks-table
+      author: liubcheck
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: lesson_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_task_lesson
+                    references: lessons(id)

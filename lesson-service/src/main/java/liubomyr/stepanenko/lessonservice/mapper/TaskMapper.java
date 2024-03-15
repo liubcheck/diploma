@@ -1,18 +1,18 @@
 package liubomyr.stepanenko.lessonservice.mapper;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import liubomyr.stepanenko.lessonservice.dto.request.TaskRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.TaskDto;
 import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.model.Variant;
+import liubomyr.stepanenko.lessonservice.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class TaskMapper {
+    private final VariantRepository variantRepository;
     private final VariantMapper variantMapper;
 
     public TaskDto toDto(Task task) {
@@ -40,24 +40,12 @@ public class TaskMapper {
         task.setTaskType(taskRequestDto.getTaskType());
         task.setRightAnswer(taskRequestDto.getRightAnswer());
         if (taskRequestDto.getVariants() != null && !taskRequestDto.getVariants().isEmpty()) {
-            Map<Long, Variant> existingVariants = task.getVariants().stream()
-                    .collect(Collectors.toMap(Variant::getId, variant -> variant));
-            List<Variant> updatedVariants = taskRequestDto.getVariants().stream()
-                    .map(variantDto -> {
-                        Variant variant;
-                        if (variantDto.getId() != null && existingVariants.containsKey(variantDto.getId())) {
-                            variant = existingVariants.get(variantDto.getId());
-                        } else {
-                            variant = new Variant();
-                            variant.setTask(task);
-                        }
-                        variant.setValue(variantDto.getValue());
-                        variant.setIsRight(variantDto.getIsRight());
-                        return variant;
-                    })
+            List<Variant> variants = taskRequestDto.getVariants().stream()
+                    .map(variantMapper::toModel)
                     .toList();
+            variants.forEach(variant -> variant.setTask(task));
             task.getVariants().clear();
-            task.getVariants().addAll(updatedVariants);
+            task.getVariants().addAll(variants);
         }
     }
 }
