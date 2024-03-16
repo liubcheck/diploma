@@ -59,6 +59,12 @@ public class LessonService implements BasicService<LessonRequestDto, LessonDto> 
         return id;
     }
 
+    public List<LessonDto> getAllByGrade(Integer grade) {
+        return lessonRepository.findAllByGrade(grade).stream()
+                .map(lessonMapper::toDto)
+                .toList();
+    }
+
     private Lesson findLessonById(Long id) {
         return lessonRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Lesson not found with id = " + id)

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-grade-column-in-lessons-table
+      author: liubcheck
+      changes:
+        - addColumn:
+            tableName: lessons
+            columns:
+              - column:
+                  name: grade
+                  type: integer
+                  constraints:
+                    nullable: false

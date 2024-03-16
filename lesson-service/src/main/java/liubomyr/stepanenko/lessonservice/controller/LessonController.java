@@ -53,4 +53,10 @@ public class LessonController {
         lessonService.deleteById(id);
         return id;
     }
+
+    @GetMapping("/{grade}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public List<LessonDto> getAllLessonsByGrade(@PathVariable Integer grade) {
+        return lessonService.getAllByGrade(grade);
+    }
 }

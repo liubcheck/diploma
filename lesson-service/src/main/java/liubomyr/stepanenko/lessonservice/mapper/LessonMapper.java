@@ -19,6 +19,7 @@ public class LessonMapper {
     public LessonDto toDto(Lesson lesson) {
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lesson.getId());
+        lessonDto.setGrade(lesson.getGrade());
         lessonDto.setTitle(lesson.getTitle());
         lessonDto.setTasks(lesson.getTasks().stream()
                 .map(taskMapper::toDto)
@@ -33,6 +34,7 @@ public class LessonMapper {
     }
 
     public void updateModelFromDto(Lesson lesson, LessonRequestDto lessonRequestDto) {
+        lesson.setGrade(lessonRequestDto.getGrade());
         lesson.setTitle(lessonRequestDto.getTitle());
         if (lessonRequestDto.getTaskIds() != null) {
             List<Task> tasks = lessonRequestDto.getTaskIds().stream()
