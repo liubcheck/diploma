@@ -1,4 +1,4 @@
-package liubomyr.stepanenko.userservice.dto.response;
+package liubomyr.stepanenko.lessonservice.dto.response;
 
 import lombok.Data;
 

@@ -9,4 +9,5 @@ databaseChangeLog:
               - column: {name: "email", value: "lyubomirvs@gmail.com"}
               - column: {name: "password", value: "$2a$12$vZ3drbxFS8P8OFCJDZVXS.5rx.ocgtiYrLTrqMcnWQ83OX1jrpE0W"}
               - column: {name: "username", value: "liubcheck"}
+              - column: {name: "role_id", value: 1}
               - column: {name: "is_deleted", valueBoolean: false}

@@ -1,5 +1,6 @@
 package liubomyr.stepanenko.userservice.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import liubomyr.stepanenko.userservice.dto.request.UserLoginRequestDto;
 import liubomyr.stepanenko.userservice.dto.request.UserRegistrationRequestDto;
 import liubomyr.stepanenko.userservice.dto.response.UserDto;
@@ -46,7 +47,7 @@ public class UserService {
 
         Role userRole = roleRepository.findByName(RoleName.USER)
                 .orElseThrow(() -> new IllegalStateException("USER role not found"));
-        user.getRoles().add(userRole);
+        user.setRole(userRole);
 
         userRepository.save(user);
         return userMapper.toDto(user);
@@ -58,5 +59,12 @@ public class UserService {
         );
         String token = jwtUtil.generateToken(authentication.getName());
         return new UserLoginResponseDto(token);
+    }
+
+    public UserDto findByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException("User not found with username = " + username)
+        );
+        return userMapper.toDto(user);
     }
 }
