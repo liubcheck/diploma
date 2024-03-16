@@ -22,15 +22,6 @@ public class JwtUtil {
         secret = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(secret)
-                .compact();
-    }
-
     public boolean isValidToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parser()
@@ -43,7 +34,7 @@ public class JwtUtil {
         }
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return getClaimsFromToken(token, Claims::getSubject);
     }
 

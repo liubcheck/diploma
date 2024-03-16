@@ -31,11 +31,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String token = getToken(request);
         if (token != null && jwtUtil.isValidToken(token)) {
-            String username = jwtUtil.getUsername(token);
-            UserDto userDto = userFeignClient.findUserByUsername(username);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    username, null, List.of(new SimpleGrantedAuthority(userDto.getRole().name())));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String email = jwtUtil.getEmail(token);
+            UserDto userDto = userFeignClient.findUserByEmail(email);
+            if (userDto != null) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        userDto, null, List.of(
+                                new SimpleGrantedAuthority("ROLE_" + userDto.getRole().name()))
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }

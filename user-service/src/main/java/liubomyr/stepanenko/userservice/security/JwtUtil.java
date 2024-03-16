@@ -43,7 +43,7 @@ public class JwtUtil {
         }
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return getClaimsFromToken(token, Claims::getSubject);
     }
 

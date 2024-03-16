@@ -61,9 +61,9 @@ public class UserService {
         return new UserLoginResponseDto(token);
     }
 
-    public UserDto findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException("User not found with username = " + username)
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException("User not found with email " + email)
         );
         return userMapper.toDto(user);
     }
