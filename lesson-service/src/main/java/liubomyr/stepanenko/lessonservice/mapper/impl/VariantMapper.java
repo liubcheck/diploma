@@ -1,15 +1,17 @@
-package liubomyr.stepanenko.lessonservice.mapper;
+package liubomyr.stepanenko.lessonservice.mapper.impl;
 
 import java.util.Optional;
 import liubomyr.stepanenko.lessonservice.dto.request.VariantRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.VariantDto;
+import liubomyr.stepanenko.lessonservice.mapper.BasicMapper;
 import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.model.Variant;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VariantMapper {
+public class VariantMapper implements BasicMapper<Variant, VariantRequestDto, VariantDto> {
 
+    @Override
     public VariantDto toDto(Variant variant) {
         VariantDto variantDto =  new VariantDto();
         variantDto.setId(variant.getId());
@@ -18,6 +20,7 @@ public class VariantMapper {
         return variantDto;
     }
 
+    @Override
     public Variant toModel(VariantRequestDto variantRequestDto) {
         Variant variant = new Variant();
         variant.setId(variantRequestDto.getId());
@@ -25,6 +28,7 @@ public class VariantMapper {
         return variant;
     }
 
+    @Override
     public void updateModelFromDto(Variant variant, VariantRequestDto variantRequestDto) {
         variant.setTask(getTaskFromId(variantRequestDto.getTaskId()));
         variant.setValue(variantRequestDto.getValue());

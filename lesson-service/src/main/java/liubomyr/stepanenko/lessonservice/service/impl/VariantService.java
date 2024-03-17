@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import liubomyr.stepanenko.lessonservice.dto.request.VariantRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.VariantDto;
-import liubomyr.stepanenko.lessonservice.mapper.VariantMapper;
+import liubomyr.stepanenko.lessonservice.mapper.impl.VariantMapper;
 import liubomyr.stepanenko.lessonservice.model.Variant;
 import liubomyr.stepanenko.lessonservice.repository.VariantRepository;
 import liubomyr.stepanenko.lessonservice.service.BasicService;

@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changes/06-add-lesson-reference-in-tasks-table.yaml
   - include:
       file: db/changelog/changes/07-add-grade-column-in-lessons-table.yaml
+  - include:
+      file: db/changelog/changes/08-create-progress-table.yaml

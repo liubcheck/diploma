@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import liubomyr.stepanenko.lessonservice.dto.request.TaskRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.TaskDto;
-import liubomyr.stepanenko.lessonservice.mapper.TaskMapper;
+import liubomyr.stepanenko.lessonservice.mapper.impl.TaskMapper;
 import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.repository.TaskRepository;
 import liubomyr.stepanenko.lessonservice.service.BasicService;

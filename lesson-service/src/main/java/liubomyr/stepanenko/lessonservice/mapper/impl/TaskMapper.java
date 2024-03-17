@@ -1,20 +1,20 @@
-package liubomyr.stepanenko.lessonservice.mapper;
+package liubomyr.stepanenko.lessonservice.mapper.impl;
 
 import java.util.List;
 import liubomyr.stepanenko.lessonservice.dto.request.TaskRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.TaskDto;
+import liubomyr.stepanenko.lessonservice.mapper.BasicMapper;
 import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.model.Variant;
-import liubomyr.stepanenko.lessonservice.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TaskMapper {
-    private final VariantRepository variantRepository;
+public class TaskMapper implements BasicMapper<Task, TaskRequestDto, TaskDto> {
     private final VariantMapper variantMapper;
 
+    @Override
     public TaskDto toDto(Task task) {
         TaskDto taskDto = new TaskDto();
         taskDto.setId(task.getId());
@@ -29,12 +29,14 @@ public class TaskMapper {
         return taskDto;
     }
 
+    @Override
     public Task toModel(TaskRequestDto taskRequestDto) {
         Task task = new Task();
         updateModelFromDto(task, taskRequestDto);
         return task;
     }
 
+    @Override
     public void updateModelFromDto(Task task, TaskRequestDto taskRequestDto) {
         task.setQuestion(taskRequestDto.getQuestion());
         task.setTaskType(taskRequestDto.getTaskType());

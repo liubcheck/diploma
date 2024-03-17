@@ -1,9 +1,10 @@
-package liubomyr.stepanenko.lessonservice.mapper;
+package liubomyr.stepanenko.lessonservice.mapper.impl;
 
 import java.util.List;
 import java.util.Optional;
 import liubomyr.stepanenko.lessonservice.dto.request.LessonRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.LessonDto;
+import liubomyr.stepanenko.lessonservice.mapper.BasicMapper;
 import liubomyr.stepanenko.lessonservice.model.Lesson;
 import liubomyr.stepanenko.lessonservice.model.Task;
 import liubomyr.stepanenko.lessonservice.repository.TaskRepository;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LessonMapper {
+public class LessonMapper implements BasicMapper<Lesson, LessonRequestDto, LessonDto> {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
+    @Override
     public LessonDto toDto(Lesson lesson) {
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lesson.getId());
@@ -27,12 +29,14 @@ public class LessonMapper {
         return lessonDto;
     }
 
+    @Override
     public Lesson toModel(LessonRequestDto lessonRequestDto) {
         Lesson lesson = new Lesson();
         updateModelFromDto(lesson, lessonRequestDto);
         return lesson;
     }
 
+    @Override
     public void updateModelFromDto(Lesson lesson, LessonRequestDto lessonRequestDto) {
         lesson.setGrade(lessonRequestDto.getGrade());
         lesson.setTitle(lessonRequestDto.getTitle());
