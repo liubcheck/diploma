@@ -43,4 +43,9 @@ public class UserController {
     public UserDto findUserByEmail(@RequestParam(value = "email") String email) {
         return userService.findByEmail(email);
     }
+
+    @PostMapping("/logout")
+    public void logoutUser() {
+        userService.logout();
+    }
 }

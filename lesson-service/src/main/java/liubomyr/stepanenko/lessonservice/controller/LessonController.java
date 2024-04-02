@@ -54,7 +54,7 @@ public class LessonController {
         return id;
     }
 
-    @GetMapping("/{grade}")
+    @GetMapping("/grade/{grade}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public List<LessonDto> getAllLessonsByGrade(@PathVariable Integer grade) {
         return lessonService.getAllByGrade(grade);
