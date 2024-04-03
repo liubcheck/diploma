@@ -20,6 +20,7 @@ public class LessonMapper implements BasicMapper<Lesson, LessonRequestDto, Lesso
     @Override
     public LessonDto toDto(Lesson lesson) {
         LessonDto lessonDto = new LessonDto();
+        lessonDto.setSubject(lessonDto.getSubject());
         lessonDto.setId(lesson.getId());
         lessonDto.setGrade(lesson.getGrade());
         lessonDto.setTitle(lesson.getTitle());
@@ -38,6 +39,7 @@ public class LessonMapper implements BasicMapper<Lesson, LessonRequestDto, Lesso
 
     @Override
     public void updateModelFromDto(Lesson lesson, LessonRequestDto lessonRequestDto) {
+        lesson.setSubject(lessonRequestDto.getSubject());
         lesson.setGrade(lessonRequestDto.getGrade());
         lesson.setTitle(lessonRequestDto.getTitle());
         if (lessonRequestDto.getTaskIds() != null) {

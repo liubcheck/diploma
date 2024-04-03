@@ -59,4 +59,11 @@ public class LessonController {
     public List<LessonDto> getAllLessonsByGrade(@PathVariable Integer grade) {
         return lessonService.getAllByGrade(grade);
     }
+
+    @GetMapping("/{grade}/{subject}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public List<LessonDto> getAllLessonsByGradeAndSubject(@PathVariable Integer grade,
+                                                          @PathVariable String subject) {
+        return lessonService.getAllByGradeAndSubject(grade, subject);
+    }
 }

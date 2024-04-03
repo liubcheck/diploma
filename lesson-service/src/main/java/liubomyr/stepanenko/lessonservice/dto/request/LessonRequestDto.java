@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class LessonRequestDto {
+    @NotBlank
+    private String subject;
     @NotNull
     private Integer grade;
     @NotBlank

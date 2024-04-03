@@ -21,6 +21,8 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    private String subject;
+    @Column(nullable = false)
     private Integer grade;
     @Column(nullable = false)
     private String title;

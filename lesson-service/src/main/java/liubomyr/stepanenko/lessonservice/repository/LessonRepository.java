@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     List<Lesson> findAllByGrade(Integer grade);
+
+    List<Lesson> findAllByGradeAndSubject(Integer grade, String subject);
 }
