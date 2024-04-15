@@ -35,7 +35,7 @@ public class UserService {
     @Transactional
     public UserDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.findByUsernameOrEmail(request.getEmail()).isPresent()) {
             throw new RegistrationException(
                     String.format("The user with the email %s is already registered",
                             request.getEmail()));
@@ -62,9 +62,9 @@ public class UserService {
         return new UserLoginResponseDto(token);
     }
 
-    public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new EntityNotFoundException("User not found with email " + email)
+    public UserDto findByUsernameOrEmail(String data) {
+        User user = userRepository.findByUsernameOrEmail(data).orElseThrow(
+                () -> new EntityNotFoundException("User not found with such identifier " + data)
         );
         return userMapper.toDto(user);
     }

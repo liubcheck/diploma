@@ -26,6 +26,6 @@ public class Lesson {
     private Integer grade;
     @Column(nullable = false)
     private String title;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lesson", cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 }

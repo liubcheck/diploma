@@ -6,9 +6,13 @@ import liubomyr.stepanenko.userservice.dto.request.UserRegistrationRequestDto;
 import liubomyr.stepanenko.userservice.dto.response.UserDto;
 import liubomyr.stepanenko.userservice.dto.response.UserLoginResponseDto;
 import liubomyr.stepanenko.userservice.exception.RegistrationException;
+import liubomyr.stepanenko.userservice.mapper.UserMapper;
+import liubomyr.stepanenko.userservice.model.User;
 import liubomyr.stepanenko.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping("/hello")
     @PreAuthorize("hasRole('ADMIN')")
@@ -39,9 +44,15 @@ public class UserController {
         return userService.authenticate(request);
     }
 
-    @GetMapping("/find-by-email")
-    public UserDto findUserByEmail(@RequestParam(value = "email") String email) {
-        return userService.findByEmail(email);
+    @GetMapping("/find")
+    public UserDto findByUsernameOrEmail(@RequestParam(value = "data") String data) {
+        return userService.findByUsernameOrEmail(data);
+    }
+
+    @GetMapping("/me")
+    public UserDto findCurrentUser(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return userMapper.toDto(user);
     }
 
     @PostMapping("/logout")

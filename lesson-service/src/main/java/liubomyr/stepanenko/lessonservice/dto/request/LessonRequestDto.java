@@ -13,5 +13,5 @@ public class LessonRequestDto {
     private Integer grade;
     @NotBlank
     private String title;
-    private List<Long> taskIds;
+    private List<TaskRequestDto> tasks;
 }

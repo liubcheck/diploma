@@ -9,28 +9,5 @@ databaseChangeLog:
               - column:
                   name: subject
                   type: varchar(255)
-                  # Temporarily allow nulls
                   constraints:
-                    nullable: true
-
-  # Assume default value for existing rows. Modify this according to your needs.
-  - changeSet:
-      id: update-existing-lessons-with-default-subject
-      author: liubcheck
-      changes:
-        - sql: UPDATE lessons SET subject='Math' WHERE subject IS NULL
-
-  # Now alter the column to set it as NOT NULL
-  - changeSet:
-      id: alter-subject-column-set-not-null
-      author: liubcheck
-      changes:
-        - sql: ALTER TABLE lessons ALTER COLUMN subject SET NOT NULL
-
-  # Add specific subjects to certain lessons
-  - changeSet:
-      id: insert-specific-subjects-for-lessons
-      author: liubcheck
-      changes:
-        - sql: UPDATE lessons SET subject='Math' WHERE id=11
-        - sql: UPDATE lessons SET subject='Science' WHERE id=12
+                    nullable: false
