@@ -31,7 +31,7 @@ public class ProgressController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public List<ProgressDto> getAllProgressByUserEmail(Authentication authentication) {
+    public List<ProgressDto> getAllUserProgress(Authentication authentication) {
         UserDto userDto = (UserDto) authentication.getPrincipal();
         return progressService.getAllByUserEmail(userDto.getEmail());
     }

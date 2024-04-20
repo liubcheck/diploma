@@ -18,6 +18,7 @@ public class ProgressMapper implements BasicMapper<Progress, ProgressRequestDto,
     public ProgressDto toDto(Progress progress) {
         ProgressDto dto = new ProgressDto();
         dto.setId(progress.getId());
+        dto.setLessonId(progress.getLesson().getId());
         dto.setUserEmail(progress.getUserEmail());
         dto.setScore(progress.getScore());
         dto.setIsCompleted(progress.getIsCompleted());
@@ -38,6 +39,6 @@ public class ProgressMapper implements BasicMapper<Progress, ProgressRequestDto,
                         + requestDto.getLessonId())
         ));
         progress.setScore(requestDto.getScore());
-        progress.setIsCompleted(requestDto.getScore() >= 8);
+        progress.setIsCompleted(((double) requestDto.getScore() / progress.getLesson().getTasks().size()) >= 0.8);
     }
 }
