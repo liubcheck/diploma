@@ -10,7 +10,6 @@ import liubomyr.stepanenko.userservice.mapper.UserMapper;
 import liubomyr.stepanenko.userservice.model.User;
 import liubomyr.stepanenko.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

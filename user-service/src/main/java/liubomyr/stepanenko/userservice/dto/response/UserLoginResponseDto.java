@@ -1,4 +1,4 @@
 package liubomyr.stepanenko.userservice.dto.response;
 
-public record UserLoginResponseDto(String token) {
+public record UserLoginResponseDto(UserDto user, String token) {
 }

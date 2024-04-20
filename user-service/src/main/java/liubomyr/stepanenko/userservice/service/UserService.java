@@ -58,8 +58,10 @@ public class UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getLoginData(), request.getPassword())
         );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = (User) authentication.getPrincipal();
         String token = jwtUtil.generateToken(authentication.getName());
-        return new UserLoginResponseDto(token);
+        return new UserLoginResponseDto(userMapper.toDto(user), token);
     }
 
     public UserDto findByUsernameOrEmail(String data) {

@@ -53,4 +53,10 @@ public class TaskController {
         taskService.deleteById(id);
         return id;
     }
+
+    @GetMapping("/lesson/{lessonId}")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public List<TaskDto> getRandomizedTasks(@PathVariable Long lessonId) {
+        return taskService.getRandomizedTasks(lessonId);
+    }
 }
