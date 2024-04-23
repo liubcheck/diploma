@@ -1,7 +1,10 @@
 package liubomyr.stepanenko.lessonservice.controller;
 
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import liubomyr.stepanenko.lessonservice.dto.request.ProgressRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.ProgressDto;
 import liubomyr.stepanenko.lessonservice.dto.response.UserDto;
@@ -41,5 +44,46 @@ public class ProgressController {
     public Integer getUserTotalScore(Authentication authentication) {
         UserDto userDto = (UserDto) authentication.getPrincipal();
         return progressService.getUserTotalScore(userDto.getEmail());
+    }
+
+    @GetMapping("/average-score")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Double getUserAverageScore(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getUserAverageScore(userDto.getEmail());
+    }
+
+    @GetMapping("/average-attempts-number")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Double getAverageLessonAttemptsNumber(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getAverageLessonAttemptsNumber(userDto.getEmail());
+    }
+
+    @GetMapping("/best-score")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Integer getBestScore(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getBestScoreByUserEmail(userDto.getEmail());
+    }
+
+    @GetMapping("/worst-score")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Integer getWorstScore(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getWorstScoreByUserEmail(userDto.getEmail());
+    }
+
+    @GetMapping("/tests-count-by-day")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Map<String, Integer> getTestCountsByDay(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getTestCountsByDay(userDto.getEmail());
+    }
+
+    @GetMapping("/top-10")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public Map<String, Integer> getTopTenUsernamesByScore() {
+        return progressService.getTopTenUsersByScore();
     }
 }

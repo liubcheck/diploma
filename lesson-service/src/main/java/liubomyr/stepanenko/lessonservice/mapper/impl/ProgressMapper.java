@@ -1,6 +1,7 @@
 package liubomyr.stepanenko.lessonservice.mapper.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import liubomyr.stepanenko.lessonservice.dto.request.ProgressRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.ProgressDto;
 import liubomyr.stepanenko.lessonservice.mapper.BasicMapper;
@@ -29,6 +30,7 @@ public class ProgressMapper implements BasicMapper<Progress, ProgressRequestDto,
     public Progress toModel(ProgressRequestDto requestDto) {
         Progress progress = new Progress();
         updateModelFromDto(progress, requestDto);
+        progress.setPassingDate(LocalDateTime.now());
         return progress;
     }
 

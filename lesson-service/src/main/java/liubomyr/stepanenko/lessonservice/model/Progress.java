@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Entity
@@ -18,7 +19,6 @@ public class Progress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @Column(name = "user_id", nullable = false)
     @JoinColumn(table = "users", name = "user_email", nullable = false)
     private String userEmail;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -26,6 +26,8 @@ public class Progress {
     private Lesson lesson;
     @Column(name = "is_completed", nullable = false)
     private Boolean isCompleted;
+    @Column(name = "passing_date", nullable = false)
+    private LocalDateTime passingDate;
     @Column(nullable = false)
     private Integer score;
 }

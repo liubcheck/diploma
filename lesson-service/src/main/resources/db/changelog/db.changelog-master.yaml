@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/changelog/changes/08-create-progress-table.yaml
   - include:
       file: db/changelog/changes/09-insert-subject-column-in-lessons-table.yaml
+  - include:
+      file: db/changelog/changes/10-add-passing-date-column-in-progress-table.yaml

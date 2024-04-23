@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-passing-date-column-in-progress-table
+      author: liubcheck
+      changes:
+        - addColumn:
+            tableName: progress
+            columns:
+              - column:
+                  name: passing_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
