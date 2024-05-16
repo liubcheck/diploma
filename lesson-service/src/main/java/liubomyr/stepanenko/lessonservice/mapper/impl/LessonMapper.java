@@ -1,9 +1,10 @@
 package liubomyr.stepanenko.lessonservice.mapper.impl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 import liubomyr.stepanenko.lessonservice.dto.request.LessonRequestDto;
+import liubomyr.stepanenko.lessonservice.dto.request.TaskRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.LessonDto;
 import liubomyr.stepanenko.lessonservice.mapper.BasicMapper;
 import liubomyr.stepanenko.lessonservice.model.Lesson;
@@ -15,8 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LessonMapper implements BasicMapper<Lesson, LessonRequestDto, LessonDto> {
-    private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+    private final TaskRepository taskRepository;
 
     @Override
     public LessonDto toDto(Lesson lesson) {
@@ -43,15 +44,16 @@ public class LessonMapper implements BasicMapper<Lesson, LessonRequestDto, Lesso
         lesson.setSubject(lessonRequestDto.getSubject());
         lesson.setGrade(lessonRequestDto.getGrade());
         lesson.setTitle(lessonRequestDto.getTitle());
-        if (lessonRequestDto.getTasks() != null) {
-            List<Task> tasks = lessonRequestDto.getTasks().stream()
+        if (lessonRequestDto.getTasks() != null && !lessonRequestDto.getTasks().isEmpty()) {
+            List<Task> newTasks = lessonRequestDto.getTasks().stream()
                     .map(taskDto -> {
                         Task task = taskMapper.toModel(taskDto);
                         task.setLesson(lesson);
                         return task;
                     })
-                    .collect(Collectors.toList());
-            lesson.setTasks(tasks);
+                    .toList();
+            lesson.getTasks().clear();
+            lesson.getTasks().addAll(newTasks);
         }
     }
 }

@@ -24,6 +24,9 @@ public class LessonService implements BasicService<LessonRequestDto, LessonDto> 
 
     @Override
     public LessonDto save(LessonRequestDto lessonRequestDto) {
+        if (lessonRequestDto.getTasks() != null && lessonRequestDto.getTasks().size() != 10) {
+            throw new IllegalArgumentException("Each lesson must have exactly 10 tasks.");
+        }
         Lesson lesson = lessonMapper.toModel(lessonRequestDto);
         return lessonMapper.toDto(lessonRepository.save(lesson));
     }
@@ -43,6 +46,9 @@ public class LessonService implements BasicService<LessonRequestDto, LessonDto> 
 
     @Override
     public LessonDto update(Long id, LessonRequestDto lessonRequestDto) {
+        if (lessonRequestDto.getTasks() != null && lessonRequestDto.getTasks().size() != 10) {
+            throw new IllegalArgumentException("Each lesson must have exactly 10 tasks.");
+        }
         Lesson lessonForUpdate = findLessonById(id);
         lessonMapper.updateModelFromDto(lessonForUpdate, lessonRequestDto);
         return lessonMapper.toDto(lessonRepository.save(lessonForUpdate));

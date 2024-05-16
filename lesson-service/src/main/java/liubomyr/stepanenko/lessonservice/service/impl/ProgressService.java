@@ -10,6 +10,7 @@ import java.util.Map;
 import liubomyr.stepanenko.lessonservice.dto.request.ProgressRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.ProgressDto;
 import liubomyr.stepanenko.lessonservice.dto.response.UserDto;
+import liubomyr.stepanenko.lessonservice.dto.response.UserStatsDto;
 import liubomyr.stepanenko.lessonservice.feign.UserFeignClient;
 import liubomyr.stepanenko.lessonservice.mapper.impl.ProgressMapper;
 import liubomyr.stepanenko.lessonservice.model.Progress;
@@ -88,5 +89,18 @@ public class ProgressService {
             topTenUsers.put(user.getUsername(), ((Number) result[1]).intValue());
         }
         return topTenUsers;
+    }
+
+    public UserStatsDto getUserStats(String userEmail) {
+        UserStatsDto userStatsDto = new UserStatsDto();
+        userStatsDto.setUserEmail(userEmail);
+        userStatsDto.setTotalScore(getUserTotalScore(userEmail));
+        userStatsDto.setAverageScore(getUserAverageScore(userEmail));
+        userStatsDto.setAverageAttemptsNumber(getAverageLessonAttemptsNumber(userEmail));
+        userStatsDto.setBestScore(getBestScoreByUserEmail(userEmail));
+        userStatsDto.setWorstScore(getWorstScoreByUserEmail(userEmail));
+        userStatsDto.setTestCountsByDay(getTestCountsByDay(userEmail));
+        userStatsDto.setTopTenUsersData(getTopTenUsersByScore());
+        return userStatsDto;
     }
 }

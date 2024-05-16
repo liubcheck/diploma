@@ -1,13 +1,12 @@
 package liubomyr.stepanenko.lessonservice.controller;
 
 import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import liubomyr.stepanenko.lessonservice.dto.request.ProgressRequestDto;
 import liubomyr.stepanenko.lessonservice.dto.response.ProgressDto;
 import liubomyr.stepanenko.lessonservice.dto.response.UserDto;
+import liubomyr.stepanenko.lessonservice.dto.response.UserStatsDto;
 import liubomyr.stepanenko.lessonservice.service.impl.ProgressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -85,5 +84,12 @@ public class ProgressController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public Map<String, Integer> getTopTenUsernamesByScore() {
         return progressService.getTopTenUsersByScore();
+    }
+
+    @GetMapping("/my-stats")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public UserStatsDto getStats(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return progressService.getUserStats(userDto.getEmail());
     }
 }
